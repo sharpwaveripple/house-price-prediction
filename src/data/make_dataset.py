@@ -50,7 +50,7 @@ def impute_missing(df):
 def write_data(project_dir, df):
     # write interim imputed data
     fpath = os.path.join(project_dir, "data", "interim", "df.csv")
-    print(f"Saving imputed data to {fpath}")
+    print(f"\nSaving imputed data to {fpath}")
     df.to_csv(fpath, index=None)
 
 
