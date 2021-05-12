@@ -1,0 +1,10 @@
+LotFrontage
+MasVnrArea
+BsmtFinSF1
+BsmtFinSF2
+BsmtUnfSF
+TotalBsmtSF
+BsmtFullBath
+BsmtHalfBath
+GarageCars
+GarageArea

@@ -1,0 +1,15 @@
+Alley
+MasVnrType
+BsmtQual
+BsmtCond
+BsmtExposure
+BsmtFinType1
+BsmtFinType2
+FireplaceQu
+GarageType
+GarageFinish
+GarageQual
+GarageCond
+PoolQC
+Fence
+MiscFeature

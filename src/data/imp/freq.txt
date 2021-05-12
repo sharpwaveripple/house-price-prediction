@@ -1,0 +1,8 @@
+MSZoning
+Utilities
+Exterior1st
+Exterior2nd
+Electrical
+KitchenQual
+Functional
+SaleType
