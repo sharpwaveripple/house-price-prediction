@@ -1,7 +1,14 @@
-housing
+Readme
 ==============================
 
 Predicting housing prices on Kaggle.
+
+```bash
+git clone https://github.com/sharpwaveripple/house-price-prediction
+kaggle competitions download -c house-prices-advanced-regression-techniques
+mv house-prices-advanced-regression-techniques.zip house-price-prediction/data/raw/
+```
+
 
 Project Organization
 ------------
