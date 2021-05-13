@@ -1,0 +1,10 @@
+OverallQual
+GrLivArea
+Neighborhood
+TotalBsmtSF
+BsmtFinSF1
+YearBuilt
+OverallCond
+YearRemodAdd
+LotArea
+1stFlrSF
