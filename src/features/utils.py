@@ -5,6 +5,12 @@ import pandas as pd
 from sklearn.preprocessing import OneHotEncoder, OrdinalEncoder
 
 
+def split_data(df):
+    train = df[df["dataset"] == "train"].drop(columns="dataset")
+    test = df[df["dataset"] == "test"].drop(columns="dataset")
+    return train, test
+
+
 def encode_ordinal(data, categoricals):
     df = data.copy()
     enc = OrdinalEncoder()
