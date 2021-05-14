@@ -67,7 +67,11 @@ def main():
     df_cat = encode_categoricals(df[X_list], project_dir, "one_hot")
 
     train, test = split_data(df_cat)
-    for i, j in {'train': train, 'test': test}.items():
+    for i, j in {"train": train, "test": test}.items():
         fpath = os.path.join(project_dir, "data", "processed", f"{i}.csv")
         print(f"Saving processed {i}ing data to {fpath}")
         j.to_csv(fpath, index=None)
+
+
+if __name__ == "__main__":
+    main()
