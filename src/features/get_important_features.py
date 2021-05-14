@@ -8,7 +8,7 @@ from lightgbm import LGBMRegressor
 from sklearn.inspection import permutation_importance
 from sklearn.model_selection import train_test_split
 
-from utils import encode_categoricals
+from utils import encode_categoricals, split_data
 
 # set constants
 RANDOM_STATES = [0, 1, 42, 981, 314159]
@@ -20,12 +20,6 @@ def read_data(project_dir):
     fpath = os.path.join(project_dir, "data", "interim", "df.csv")
     print(f"Reading imputed data from {fpath}")
     return pd.read_csv(fpath)
-
-
-def split_data(df):
-    train = df[df["dataset"] == "train"].drop(columns="dataset")
-    test = df[df["dataset"] == "test"].drop(columns="dataset")
-    return train, test
 
 
 def fit_LGBM(X, y, objective="regression_l1", random_state=42):
