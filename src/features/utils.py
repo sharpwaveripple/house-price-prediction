@@ -7,7 +7,7 @@ from sklearn.preprocessing import OneHotEncoder, OrdinalEncoder
 
 def split_data(df):
     train = df[df["dataset"] == "train"].drop(columns="dataset")
-    test = df[df["dataset"] == "test"].drop(columns="dataset")
+    test = df[df["dataset"] == "test"].drop(columns=["dataset", "SalePrice"])
     return train, test
 
 
