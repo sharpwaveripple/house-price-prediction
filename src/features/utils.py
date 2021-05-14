@@ -9,9 +9,10 @@ def encode_ordinal(data, categoricals):
     df = data.copy()
     enc = OrdinalEncoder()
     for col in categoricals:
-        print(f"Encoding {col} using ordinal encoding")
-        x = pd.Categorical(enc.fit_transform(df[[col]]).flatten())
-        df[col] = x
+        if col in df.columns:
+            print(f"Encoding {col} using ordinal encoding")
+            x = pd.Categorical(enc.fit_transform(df[[col]]).flatten())
+            df[col] = x
 
     return df
 
@@ -20,14 +21,15 @@ def encode_one_hot(data, categoricals, drop_orig_col=True):
     df = data.copy()
     enc = OneHotEncoder(sparse=False)
     for col in categoricals:
-        print(f"Encoding {col} using one hot encoding")
-        enc_vals = enc.fit_transform(df[[col]])
-        enc_keys = ["_".join([col, str(x)]) for x in enc.categories_[0]]
-        enc_df = pd.DataFrame(enc_vals, columns=enc_keys, index=df.index)
+        if col in df.columns:
+            print(f"Encoding {col} using one hot encoding")
+            enc_vals = enc.fit_transform(df[[col]])
+            enc_keys = ["_".join([col, str(x)]) for x in enc.categories_[0]]
+            enc_df = pd.DataFrame(enc_vals, columns=enc_keys, index=df.index)
 
-        df = pd.concat([df, enc_df], axis=1)
-        if drop_orig_col:
-            df.drop(columns=[col], inplace=True)
+            df = pd.concat([df, enc_df], axis=1)
+            if drop_orig_col:
+                df.drop(columns=[col], inplace=True)
 
     return df
 
