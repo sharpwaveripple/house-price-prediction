@@ -1,12 +1,14 @@
+import os
+import pickle
+from pathlib import Path
+
 import pandas as pd
 from lightgbm import LGBMRegressor
-import pickle
-import os
 
 
 def main():
     # load train and test data
-    project_dir = "../../"
+    project_dir = Path(__file__).resolve().parents[2]
     processed_dir = os.path.join(project_dir, "data", "processed")
     train_fpath = os.path.join(processed_dir, "train.csv")
     test_fpath = os.path.join(processed_dir, "test.csv")
@@ -31,7 +33,8 @@ def main():
     )
     estimator.fit(X_train, y_train)
 
-    scaler = pickle.load(open("../features/SalePrice_scaler.pkl", "rb"))
+    scaler_fpath = os.path.join(project_dir, "features", "SalePrice_scaler.pkl")
+    scaler = pickle.load(open(scaler_fpath, "rb"))
     y_pred = scaler.inverse_transform(estimator.predict(X_test))
 
     X_ind["SalePrice"] = y_pred
