@@ -1,7 +1,18 @@
 Readme
 ==============================
 
-Predicting housing prices on Kaggle.
+Predicting housing prices on Kaggle. Not meant to be a serious attempt at scoring a gold medal on the leaderboard, but rather how I would quickly assemble and structure a project in a few hours.
+
+Basic flow is as follows:
+
+1) Preprocess the data, primarily through imputation and scaling (src/data/make_dataset.py).
+
+2) Select relevant features using permutation feature importance (src/features/build_features.py).
+
+3) Run through some candidate models (src/models/eval\_models.py), then tune its hyperparameters (src/models/train\_model.py) and make predictions (src/models/predict\_model.py).
+
+4) Output the predictions in data/processed/predictions.csv.
+
 
 ```bash
 git clone https://github.com/sharpwaveripple/house-price-prediction
