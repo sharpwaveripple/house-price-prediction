@@ -3,6 +3,7 @@ Simple first-pass script to evaluate which models look good at the outset.
 Best performing model is further trained in train_model.py
 '''
 
+import os
 import numpy as np
 import pandas as pd
 from lightgbm import LGBMRegressor
@@ -11,6 +12,7 @@ from sklearn.linear_model import LinearRegression, SGDRegressor
 from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import train_test_split
 from sklearn.neural_network import MLPRegressor
+from pathlib import Path
 
 
 def model_dx(m, X, y, random_state=42):
@@ -23,59 +25,67 @@ def model_dx(m, X, y, random_state=42):
     print(f"RMSE: {rmse}\n")
 
 
-# load train data
-df = pd.read_csv("../../data/processed/train.csv")
+def main():
+    project_dir = Path(__file__).resolve().parents[2]
 
-y = df["SalePrice"]
-X = df[[x for x in df.columns if x not in ["Id", "SalePrice"]]]
+    # load train data
+    fpath = os.path.join(project_dir, "data", "processed", "train.csv")
+    df = pd.read_csv(fpath)
 
-random_state = 42
-max_iter = 1e6
-fit_intercept = False
-loss = "squared_epsilon_insensitive"
+    y = df["SalePrice"]
+    X = df[[x for x in df.columns if x not in ["Id", "SalePrice"]]]
 
-print("Running LR")
-LR = LinearRegression(fit_intercept=fit_intercept)
-model_dx(LR, X, y, random_state)
+    random_state = 42
+    max_iter = 1e6
+    fit_intercept = False
+    loss = "squared_epsilon_insensitive"
 
-print("Running SGD")
-SGD = SGDRegressor(
-    loss=loss,
-    penalty="l2",
-    max_iter=max_iter,
-    fit_intercept=fit_intercept,
-    verbose=0,
-    random_state=random_state,
-)
-model_dx(SGD, X, y, random_state)
+    print("Running LR")
+    LR = LinearRegression(fit_intercept=fit_intercept)
+    model_dx(LR, X, y, random_state)
 
-print("Running SVR")
-SVR = LinearSVR(
-    epsilon=0.001,
-    C=100,
-    loss=loss,
-    fit_intercept=fit_intercept,
-    max_iter=max_iter,
-    verbose=0,
-    random_state=random_state,
-)
-model_dx(SVR, X, y, random_state)
+    print("Running SGD")
+    SGD = SGDRegressor(
+        loss=loss,
+        penalty="l2",
+        max_iter=max_iter,
+        fit_intercept=fit_intercept,
+        verbose=0,
+        random_state=random_state,
+    )
+    model_dx(SGD, X, y, random_state)
 
-print("Running MLP")
-MLP = MLPRegressor(
-    hidden_layer_sizes=1000,
-    solver="lbfgs",
-    max_iter=max_iter,
-    verbose=0,
-    random_state=random_state,
-)
-model_dx(MLP, X, y, random_state)
+    print("Running SVR")
+    SVR = LinearSVR(
+        epsilon=0.001,
+        C=100,
+        loss=loss,
+        fit_intercept=fit_intercept,
+        max_iter=max_iter,
+        verbose=0,
+        random_state=random_state,
+    )
+    model_dx(SVR, X, y, random_state)
 
-print("Running LGBM")
-LGBM = LGBMRegressor(
-    n_estimators=1000,
-    learning_rate=0.01,
-    random_state=random_state,
+    print("Running MLP")
+    MLP = MLPRegressor(
+        hidden_layer_sizes=1000,
+        solver="lbfgs",
+        max_iter=max_iter,
+        verbose=0,
+        random_state=random_state,
+    )
+    model_dx(MLP, X, y, random_state)
 
-)
-model_dx(LGBM, X, y, random_state)
+    print("Running LGBM")
+    LGBM = LGBMRegressor(
+        n_estimators=1000,
+        learning_rate=0.01,
+        random_state=random_state,
+
+    )
+    model_dx(LGBM, X, y, random_state)
+
+
+if __name__ == "__main__":
+    main()

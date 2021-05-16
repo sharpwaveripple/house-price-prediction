@@ -1,3 +1,7 @@
+import os
+import pickle
+from pathlib import Path
+
 import numpy as np
 import pandas as pd
 from lightgbm import LGBMRegressor
@@ -5,8 +9,7 @@ from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import cross_val_score, train_test_split
 from skopt import BayesSearchCV
 from skopt.space import Categorical, Integer, Real
-import pickle
-import os
+
 
 # https://stackoverflow.com/questions/42228735/scikit-learn-gridsearchcv-with-multiple-repetitions/42230764#42230764
 def nested_cv(
@@ -42,7 +45,7 @@ def nested_cv(
 
 def main():
     # load train and test data
-    project_dir = "../../"
+    project_dir = Path(__file__).resolve().parents[2]
     fpath = os.path.join(project_dir, "data", "processed", "train.csv")
 
     df = pd.read_csv(fpath)
