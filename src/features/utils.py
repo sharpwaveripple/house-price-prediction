@@ -73,10 +73,12 @@ def scale_continuous(df, project_dir):
     train, test = split_data(df)
     scaler = StandardScaler()
     for col in continuous:
+        # don't fit transforms to test set to avoid data leakage
         if col in train.columns:
             x_train = scaler.fit_transform(train[[col]])
             train[col] = x_train
-            x_test = scaler.transform(test[[col]])
-            test[col] = x_test
+            if col != "SalePrice":
+                x_test = scaler.transform(test[[col]])
+                test[col] = x_test
 
     return train, test
