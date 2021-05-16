@@ -30,7 +30,7 @@ def read_data(project_dir):
 def write_vartypes(df, write=True):
     vartypes = {"continuous": [], "categorical": []}
     for col in df.columns:
-        if col is "Id":
+        if col == "Id":
             continue
         elif df[col].dtype == "object" or col == "MSSubClass":
             if col == "dataset":
