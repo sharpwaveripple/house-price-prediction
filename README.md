@@ -3,7 +3,7 @@ Readme
 
 Predicting housing prices on Kaggle. Not meant to be a serious attempt at scoring a gold medal on the leaderboard, but rather a fun little demonstration about how I would quickly assemble and structure a project in a few hours.
 
-# Project flow
+# Project structure
 
 1) Preprocess the data, primarily through imputation and scaling (src/data/make_dataset.py).
 
@@ -30,6 +30,12 @@ mv house-prices-advanced-regression-techniques.zip house-price-prediction/data/r
 
 # enter the directory and install the conda environment
 cd house-price-prediction/
+conda env create -f environment.yml
+conda activate kaggle-housing
+
+# run the project
+cd src/
+python main.py
 ```
 
 
