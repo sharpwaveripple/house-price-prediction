@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 import os
+import pickle
 
 import pandas as pd
-from sklearn.preprocessing import OneHotEncoder, OrdinalEncoder
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import OneHotEncoder, OrdinalEncoder, StandardScaler
 
 
 def split_data(df):
@@ -80,5 +80,9 @@ def scale_continuous(df, project_dir):
             if col != "SalePrice":
                 x_test = scaler.transform(test[[col]])
                 test[col] = x_test
+            else:
+                scaler_out = f"./{col}_scaler.pkl"
+                print(f"Saving scaler for {col} to {scaler_out}")
+                pickle.dump(scaler, open(scaler_out, "wb"))
 
     return train, test
