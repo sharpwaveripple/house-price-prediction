@@ -29,7 +29,7 @@ def fit_LGBM(X, y, objective="regression_l1", random_state=42):
     return lgbm
 
 
-def permute(model, X, y, thresh=100, n_repeats=20, random_state=42):
+def permute(model, X, y, thresh=200, n_repeats=20, random_state=42):
     print(f"Permuting data {n_repeats} times")
     perm = permutation_importance(
         model,
