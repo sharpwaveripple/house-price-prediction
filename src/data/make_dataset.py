@@ -3,6 +3,7 @@ import os
 
 import pandas as pd
 from sklearn.impute import SimpleImputer
+import make_directories
 
 
 def read_data(project_dir):
@@ -56,6 +57,7 @@ def write_data(project_dir, df):
 
 def main():
     project_dir = "../../"
+    make_directories.main()
     df = read_data(project_dir)
     df = impute_missing(df)
     write_data(project_dir, df)
