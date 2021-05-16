@@ -3,8 +3,8 @@ import os
 
 import pandas as pd
 
-import get_important_features
-from utils import encode_categoricals, scale_continuous
+from . import get_important_features, utils
+from pathlib import Path
 
 
 def read_data(project_dir):
@@ -50,15 +50,15 @@ def filter_variables(df, project_dir):
 
 
 def main():
-    project_dir = "../../"
+    project_dir = Path(__file__).resolve().parents[2]
     df = read_data(project_dir)
 
     X_list = filter_variables(df, project_dir)
     X_list.remove("GarageYrBlt")
 
     # one hot encode and write out
-    df_cat = encode_categoricals(df[X_list], project_dir, "one_hot")
-    train, test = scale_continuous(df_cat, project_dir)
+    df_cat = utils.encode_categoricals(df[X_list], project_dir, "one_hot")
+    train, test = utils.scale_continuous(df_cat, project_dir)
 
     # train, test = split_data(df_cat)
     for i, j in {"train": train, "test": test}.items():

@@ -81,7 +81,7 @@ def scale_continuous(df, project_dir):
                 x_test = scaler.transform(test[[col]])
                 test[col] = x_test
             else:
-                scaler_out = f"./{col}_scaler.pkl"
+                scaler_out = os.path.join(project_dir, "src", "features", f"{col}_scaler.pkl")
                 print(f"Saving scaler for {col} to {scaler_out}")
                 pickle.dump(scaler, open(scaler_out, "wb"))
 

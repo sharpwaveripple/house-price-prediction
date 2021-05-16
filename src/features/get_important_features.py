@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
+from pathlib import Path
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -8,7 +9,7 @@ from lightgbm import LGBMRegressor
 from sklearn.inspection import permutation_importance
 from sklearn.model_selection import train_test_split
 
-from utils import encode_categoricals, split_data
+from .utils import encode_categoricals, split_data
 
 # set constants
 RANDOM_STATES = [0, 1, 42, 981, 314159]
@@ -105,7 +106,7 @@ def select_important_features(counts, project_dir):
 
 
 def main():
-    project_dir = "../../"
+    project_dir = Path(__file__).resolve().parents[2]
     sns.set_style("whitegrid")
 
     df = read_data(project_dir)

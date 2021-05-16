@@ -3,6 +3,7 @@ import os
 
 import pandas as pd
 from sklearn.impute import SimpleImputer
+from pathlib import Path
 
 
 def read_data(project_dir):
@@ -19,7 +20,7 @@ def read_data(project_dir):
     return pd.concat(df_list)
 
 
-def impute_missing(df):
+def impute_missing(df, project_dir):
     """Impute missing values.
     There are 3 different strategies to handle different types of "missingness":
     0 (for when NaN's are numeric and mean 0),
@@ -36,7 +37,7 @@ def impute_missing(df):
     }
 
     for strategy, imputer in imputers.items():
-        fpath = os.path.join("./", "imp", f"{strategy}.txt")
+        fpath = os.path.join(project_dir, "src", "data", "imp", f"{strategy}.txt")
         print(f"\nReading imputation list from {fpath}")
         cols = open(fpath).read().splitlines()
         for col in cols:
@@ -55,9 +56,9 @@ def write_data(project_dir, df):
 
 
 def main():
-    project_dir = "../../"
+    project_dir = Path(__file__).resolve().parents[2]
     df = read_data(project_dir)
-    df = impute_missing(df)
+    df = impute_missing(df, project_dir)
     write_data(project_dir, df)
 
 
