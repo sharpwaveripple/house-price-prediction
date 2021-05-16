@@ -33,7 +33,7 @@ def main():
     )
     estimator.fit(X_train, y_train)
 
-    scaler_fpath = os.path.join(project_dir, "features", "SalePrice_scaler.pkl")
+    scaler_fpath = os.path.join(project_dir, "src", "features", "SalePrice_scaler.pkl")
     scaler = pickle.load(open(scaler_fpath, "rb"))
     y_pred = scaler.inverse_transform(estimator.predict(X_test))
 
