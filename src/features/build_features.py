@@ -5,6 +5,7 @@ import pandas as pd
 
 import get_important_features
 from utils import encode_categoricals, split_data
+from sklearn.preprocessing import StandardScaler
 
 
 def read_data(project_dir):
@@ -26,24 +27,30 @@ def read_data(project_dir):
 #     df.drop(columns=drop_list, inplace=True)
 
 
-def write_categoricals(df, write=True):
-    categoricals = []
+def write_vartypes(df, write=True):
+    vartypes = {"continuous": [], "categorical": []}
     for col in df.columns:
-        if df[col].dtype == "object" or col == "MSSubClass":
+        if col in ["Id", "SalePrice"]:
+            continue
+        elif df[col].dtype == "object" or col == "MSSubClass":
             if col == "dataset":
                 continue
             else:
                 print(f"Guessing {col} is a categorical variable")
-                categoricals.append(col)
+                vartypes["categorical"].append(col)
+        else:
+            print(f"Guessing {col} is a continuous variable")
+            vartypes["continuous"].append(col)
 
     if write:
-        fpath = os.path.join("./", "categoricals.txt")
-        print(f"Writing categorical variables to {fpath}\n")
-        open(fpath, "w+").writelines("\n".join(categoricals))
+        for vartype, varlist in vartypes.items():
+            fpath = os.path.join("./", f"{vartype}.txt")
+            print(f"Writing {vartype} variables to {fpath}\n")
+            open(fpath, "w+").writelines("\n".join(varlist))
 
 
 def filter_variables(df, project_dir):
-    write_categoricals(df)
+    write_vartypes(df)
     fpath = os.path.join(project_dir, "src", "features", "X.txt")
     if os.path.exists(fpath):
         print(f"{fpath} found, loading")
@@ -56,6 +63,30 @@ def filter_variables(df, project_dir):
     return X_list
 
 
+def scale_continuous(df, project_dir):
+    """Encode categorical variables in a dataframe.
+
+    Two types of encoding are supported: ["ordinal", "one_hot"]
+
+    This function assumes there is a list of categorical features in
+    src/features/categoricals.txt, usually created by running
+    src/features/build_features.py.
+    """
+    fpath = os.path.join(project_dir, "src", "features", "continuous.txt")
+    continuous = open(fpath).read().splitlines()
+
+    train, test = split_data(df)
+    scaler = StandardScaler()
+    for col in continuous:
+        if col in train.columns:
+            x_train = scaler.fit_transform(train[[col]])
+            train[col] = x_train
+            x_test = scaler.transform(test[[col]])
+            test[col] = x_test
+
+    return train, test
+
+
 def main():
     project_dir = "../../"
     df = read_data(project_dir)
@@ -65,8 +96,9 @@ def main():
 
     # one hot encode and write out
     df_cat = encode_categoricals(df[X_list], project_dir, "one_hot")
+    train, test = scale_continuous(df_cat, project_dir)
 
-    train, test = split_data(df_cat)
+    # train, test = split_data(df_cat)
     for i, j in {"train": train, "test": test}.items():
         fpath = os.path.join(project_dir, "data", "processed", f"{i}.csv")
         print(f"Saving processed {i}ing data to {fpath}")

@@ -49,7 +49,7 @@ def encode_categoricals(df, project_dir, encoding="ordinal"):
     src/features/categoricals.txt, usually created by running
     src/features/build_features.py.
     """
-    fpath = os.path.join(project_dir, "src", "features", "categoricals.txt")
+    fpath = os.path.join(project_dir, "src", "features", "categorical.txt")
     categoricals = open(fpath).read().splitlines()
     if encoding == "ordinal":
         df_enc = encode_ordinal(df, categoricals)
