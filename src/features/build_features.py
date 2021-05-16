@@ -4,27 +4,13 @@ import os
 import pandas as pd
 
 import get_important_features
-from utils import encode_categoricals, split_data
-from sklearn.preprocessing import StandardScaler
+from utils import encode_categoricals, scale_continuous
 
 
 def read_data(project_dir):
     fpath = os.path.join(project_dir, "data", "interim", "df.csv")
     print(f"Reading imputed data from {fpath}")
     return pd.read_csv(fpath)
-
-
-# def calc_datesold(df, drop_orig_col=True):
-#     print("Creating DateSold from YrSold + MoSold * .01")
-#     df["DateSold"] = df["YrSold"] + df["MoSold"] * 0.01
-#     if drop_orig_col:
-#         print("Dropping YrSold and MoSold")
-#         df.drop(columns=["YrSold", "MoSold"], inplace=True)
-
-
-# def drop_collinear(df):
-#     drop_list = ["BsmtFinSF1", "BsmtFinSF2", "BsmtUnfSF"]
-#     df.drop(columns=drop_list, inplace=True)
 
 
 def write_vartypes(df, write=True):
@@ -61,30 +47,6 @@ def filter_variables(df, project_dir):
     X_list = open(fpath, "r").read().splitlines()
     X_list.extend(["Id", "SalePrice", "dataset"])
     return X_list
-
-
-def scale_continuous(df, project_dir):
-    """Encode categorical variables in a dataframe.
-
-    Two types of encoding are supported: ["ordinal", "one_hot"]
-
-    This function assumes there is a list of categorical features in
-    src/features/categoricals.txt, usually created by running
-    src/features/build_features.py.
-    """
-    fpath = os.path.join(project_dir, "src", "features", "continuous.txt")
-    continuous = open(fpath).read().splitlines()
-
-    train, test = split_data(df)
-    scaler = StandardScaler()
-    for col in continuous:
-        if col in train.columns:
-            x_train = scaler.fit_transform(train[[col]])
-            train[col] = x_train
-            x_test = scaler.transform(test[[col]])
-            test[col] = x_test
-
-    return train, test
 
 
 def main():
