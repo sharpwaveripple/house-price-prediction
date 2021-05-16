@@ -13,7 +13,7 @@ def read_data(project_dir):
     return pd.read_csv(fpath)
 
 
-def write_vartypes(df, write=True):
+def write_vartypes(df, project_dir, write=True):
     vartypes = {"continuous": [], "categorical": []}
     for col in df.columns:
         if col == "Id":
@@ -30,13 +30,13 @@ def write_vartypes(df, write=True):
 
     if write:
         for vartype, varlist in vartypes.items():
-            fpath = os.path.join("./", f"{vartype}.txt")
+            fpath = os.path.join(project_dir, "src", "features", f"{vartype}.txt")
             print(f"Writing {vartype} variables to {fpath}\n")
             open(fpath, "w+").writelines("\n".join(varlist))
 
 
 def filter_variables(df, project_dir):
-    write_vartypes(df)
+    write_vartypes(df, project_dir)
     fpath = os.path.join(project_dir, "src", "features", "X.txt")
     if os.path.exists(fpath):
         print(f"{fpath} found, loading")
