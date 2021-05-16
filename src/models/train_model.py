@@ -66,7 +66,7 @@ def main():
     opt = nested_cv(estimator, search_spaces, X, y, random_state=random_state)
 
     model_out = os.path.join(project_dir, "models", "LGBM.pkl")
-    print(f"Saving model for  to {model_out}")
+    print(f"Saving LGBM model to {model_out}")
     pickle.dump(opt, open(model_out, "wb"))
 
 
