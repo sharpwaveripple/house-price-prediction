@@ -55,6 +55,7 @@ def main():
 
     random_state = 0
 
+    print("Tuning LGBMRegressor hyperparameters using nested cv")
     estimator = LGBMRegressor(
         boosting_type="gbdt", random_state=random_state
     )
