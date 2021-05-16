@@ -3,6 +3,7 @@ import os
 
 import pandas as pd
 from sklearn.preprocessing import OneHotEncoder, OrdinalEncoder
+from sklearn.preprocessing import StandardScaler
 
 
 def split_data(df):
@@ -57,3 +58,25 @@ def encode_categoricals(df, project_dir, encoding="ordinal"):
         df_enc = encode_one_hot(df, categoricals)
 
     return df_enc
+
+
+def scale_continuous(df, project_dir):
+    """Scale continuous variables to mean of 0 and unit variance.
+
+    This function assumes there is a list of continuous features in
+    src/features/continuous.txt, usually created by running
+    src/features/build_features.py.
+    """
+    fpath = os.path.join(project_dir, "src", "features", "continuous.txt")
+    continuous = open(fpath).read().splitlines()
+
+    train, test = split_data(df)
+    scaler = StandardScaler()
+    for col in continuous:
+        if col in train.columns:
+            x_train = scaler.fit_transform(train[[col]])
+            train[col] = x_train
+            x_test = scaler.transform(test[[col]])
+            test[col] = x_test
+
+    return train, test
