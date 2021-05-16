@@ -1,9 +1,9 @@
 Readme
 ==============================
 
-Predicting housing prices on Kaggle. Not meant to be a serious attempt at scoring a gold medal on the leaderboard, but rather how I would quickly assemble and structure a project in a few hours.
+Predicting housing prices on Kaggle. Not meant to be a serious attempt at scoring a gold medal on the leaderboard, but rather a fun little demonstration about how I would quickly assemble and structure a project in a few hours.
 
-Basic flow is as follows:
+# Project flow
 
 1) Preprocess the data, primarily through imputation and scaling (src/data/make_dataset.py).
 
@@ -14,10 +14,22 @@ Basic flow is as follows:
 4) Output the predictions in data/processed/predictions.csv.
 
 
+# Running the code
+
+To run the code from the command line, you'll need git, the [Kaggle API](https://www.kaggle.com/docs/api) for getting the data, and [conda](https://conda.io).
+
 ```bash
+# clone the repo
 git clone https://github.com/sharpwaveripple/house-price-prediction
+
+# get the data using the Kaggle API
 kaggle competitions download -c house-prices-advanced-regression-techniques
+
+# move it into data/raw
 mv house-prices-advanced-regression-techniques.zip house-price-prediction/data/raw/
+
+# enter the directory and install the conda environment
+cd house-price-prediction/
 ```
 
 
